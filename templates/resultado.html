@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado da Consulta</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> <!-- Corrigido o caminho para o CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Resultado da Consulta</h1>
+        
+        
+            {% if resultado %}
+            <ul>
+                {% for item in resultado %}
+                <li>
+                    <strong>Documento: {{ item.numero_processo }}</strong> <pre>
+                        <td>Orgão: {{ item.nomeOrgao }}</td>
+                        <td>Data de envio: {{ item.dataenvio }}</td>
+                        <td>Data de disponibilização: {{ item.datadisponibilizacao }}</td>
+                        <td>Tipo de comunicação: {{ item.tipoComunicacao }}</td>
+                        <td>Meio: {{ item.meiocompleto }}</td>
+                        <td>Parte(s): {{ item.destinatarios }}</td>
+                        <td>Advogado(s): {{ item.destinatarioadvogados }}</td>
+                    </pre>
+                </li>
+                {% endfor %}
+            </div>
+
+            </ul>
+        {% elif erro %}
+            <div class="error">
+                <p>Erro ao consultar a API: {{ erro }}</p>
+            </div>
+        {% else %}
+            <p>NADA ENCONTRADO</p>
+        {% endif %}
+        
+        <a href="/index">Nova Consulta</a>
+    </div>
+</body>
+</html>
