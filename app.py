@@ -12,7 +12,7 @@ def resultado():
 
     pagina = request.args.get('pagina', 1, type=int)
     
-    url = f"https://hcomunicaapi.cnj.jus.br/api/v1/comunicacao"
+    url = "https://hcomunicaapi.cnj.jus.br/api/v1/comunicacao"
 
     params = {
         'numeroOab': request.args.get('numero_oab'),
