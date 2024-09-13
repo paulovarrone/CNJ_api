@@ -11,14 +11,26 @@
         <h1>Consulta CNJ</h1>
         
         <form action="/resultado" method="GET">
-            <label for="data_inicio">Data Início:</label>
-            <input type="date" id="data_inicio" name="data_inicio" required>
-            
-            <label for="data_fim">Data Fim:</label>
-            <input type="date" id="data_fim" name="data_fim" required>
-            
+            <label for="numero_oab">Nº da OAB:</label>
+            <input type="text" id="numero_oab" name="numero_oab">
+
+            <label for="uf_oab">UF da OAB</label>
+            <input type="text" id="uf_oab" name="uf_oab"> 
+
+            <label for="nome_advogado">Nome do advogado</label>
+            <input type="text" id="nome_advogado" name="nome_advogado">
+
             <label for="nome_parte">Nome da Parte:</label>
-            <input type="text" id="nome_parte" name="nome_parte" required>
+            <input type="text" id="nome_parte" name="nome_parte">
+
+            <label for="numero_processo">Numero do Processo:</label>
+            <input type="number" id="numero_processo" name="numero_processo">
+            
+            <label for="data_inicio">Data Início:</label>
+            <input type="date" id="data_inicio" name="data_inicio">
+           
+            <label for="data_fim">Data Fim:</label>
+            <input type="date" id="data_fim" name="data_fim">
             
             <button type="submit">Consultar</button>
         </form>
