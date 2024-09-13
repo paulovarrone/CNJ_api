@@ -80,3 +80,9 @@ a:hover {
     text-align: center;
     margin-top: 10px;
 }
+
+
+.paginacao {
+    display: flex;
+    gap: 30px;
+}
