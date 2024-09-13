@@ -4,12 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultado da Consulta</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> <!-- Corrigido o caminho para o CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
 </head>
 <body>
     <div class="container">
         <h1>Resultado da Consulta</h1>
         
+        <span>Página {{ pagina }} de {{ total_paginas }}</span><br>
+        <div class="paginacao">
+                    
+            {% if pagina > 1 %}
+                <a href="{{ url_for('resultado', pagina=1) }}">« Primeira</a>
+            {% endif %}
+        
+            
+            {% set start_page = pagina - 4 if pagina > 5 else 1 %}
+            {% set end_page = start_page + 9 if start_page + 9 <= total_paginas else total_paginas %}
+        
+            
+            {% if end_page - start_page < 9 %}
+                {% set start_page = end_page - 9 if end_page - 9 > 0 else 1 %}
+            {% endif %}
+        
+           
+            <div class="paginar">
+                {% for p in range(start_page, end_page + 1) %}
+                    {% if p == pagina %}
+                        <strong>{{ p }}</strong> 
+                    {% else %}
+                        <a href="{{ url_for('resultado', pagina=p) }}">{{ p }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        
+          
+            {% if pagina < total_paginas %}
+                <a href="{{ url_for('resultado', pagina=total_paginas) }}">Última »</a>
+            {% endif %}
+        </div>
+        
+        
+        
+
+        <br><br><br>
         
             {% if resultado %}
             <ul>
@@ -29,13 +66,16 @@
             </div>
 
             </ul>
-        {% elif erro %}
+        {% elif e %}
             <div class="error">
-                <p>Erro ao consultar a API: {{ erro }}</p>
+                <p>Erro ao consultar a API: {{ e }}</p>
             </div>
         {% else %}
             <p>NADA ENCONTRADO</p>
         {% endif %}
+
+        
+        
         
         <a href="/index">Nova Consulta</a>
     </div>
