@@ -9,25 +9,35 @@ def index():
 
 @app.route('/resultado')
 def resultado():
+
+    pagina = request.args.get('pagina', 1, type=int)
     
-    data_inicio = request.args.get('data_inicio')
-    data_fim = request.args.get('data_fim')
-    nome_parte = request.args.get('nome_parte')
-    
-    
-    url = f"https://hcomunicaapi.cnj.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=5&data_inicio={data_inicio}&data_fim={data_fim}&nome_parte={nome_parte}"
+    url = f"https://hcomunicaapi.cnj.jus.br/api/v1/comunicacao"
+
+    params = {
+        'numeroOab': request.args.get('numero_oab'),
+        'ufOab': request.args.get('uf_oab'),
+        'nomeAdvogado': request.args.get('nome_advogado'),
+        'nomeParte': request.args.get('nome_parte'),
+        'numeroProcesso': request.args.get('numero_processo'),
+        'dataDisponibilizacaoInicio': request.args.get('data_inicio'),
+        'dataDisponibilizacaoFim': request.args.get('data_fim'),
+        'pagina': pagina,
+        'itensPorPagina': 10
+    }
     
     try:
         
         proxy = {
-            'http': 'http://proxy.rio.rj.gov.br:8080',
-            'https': 'http://proxy.rio.rj.gov.br:8080'
+            'http': None,
+            'https': None
         }
 
         
-        response = requests.get(url, proxies=proxy, verify=False)
+        response = requests.get(url,params=params, proxies=proxy)
         response.raise_for_status()
         resultado = response.json()
+
 
         resultados_extraidos = []
 
@@ -55,8 +65,6 @@ def resultado():
                     advogados_formatado = 'Advogado não encontrado'
                     
                
-            
-
                 resultados_extraidos.append({
                     'numero_processo': numero_processo,
                     'nomeOrgao': orgao, 
@@ -68,13 +76,15 @@ def resultado():
                     'destinatarioadvogados': advogados_formatado
                     })
 
+        total_items = resultado.get('count', 0)
+        itens_por_pagina = 10 
+        total_paginas = (total_items // itens_por_pagina) + (1 if total_items % itens_por_pagina else 0)
         
-        
-        return render_template('resultado.html', resultado=resultados_extraidos)
+        return render_template('resultado.html', resultado=resultados_extraidos, pagina=pagina, total_paginas=total_paginas)
 
-    except requests.RequestException as erro:
+    except Exception as e:
        
-        return render_template('resultado.html', erro=str(erro))
+        return render_template('resultado.html', erro=str(e))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
