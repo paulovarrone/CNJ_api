@@ -9,39 +9,46 @@
 <body>
     <div class="container">
         <h1>Resultado da Consulta</h1>
+
+        {% set params = 
+            {'numero_oab':request.args.get('numero_oab'), 
+                'uf_oab':request.args.get('uf_oab'), 
+                'nome_advogado':request.args.get('nome_advogado'), 
+                'nome_parte':request.args.get('nome_parte'), 
+                'numero_processo':request.args.get('numero_processo'), 
+                'data_inicio':request.args.get('data_inicio'), 
+                'data_fim':request.args.get('data_fim')
+            }
+        %}
         
         <span>Página {{ pagina }} de {{ total_paginas }}</span><br>
         <div class="paginacao">
-                    
             {% if pagina > 1 %}
-                <a href="{{ url_for('resultado', pagina=1) }}">« Primeira</a>
+                <a href="{{ url_for('resultado', pagina=1, **params) }}">« Primeira</a>
             {% endif %}
         
-            
             {% set start_page = pagina - 4 if pagina > 5 else 1 %}
             {% set end_page = start_page + 9 if start_page + 9 <= total_paginas else total_paginas %}
         
-            
             {% if end_page - start_page < 9 %}
                 {% set start_page = end_page - 9 if end_page - 9 > 0 else 1 %}
             {% endif %}
         
-           
             <div class="paginar">
                 {% for p in range(start_page, end_page + 1) %}
                     {% if p == pagina %}
-                        <strong>{{ p }}</strong> 
+                        <strong>{{ p }}</strong>
                     {% else %}
-                        <a href="{{ url_for('resultado', pagina=p) }}">{{ p }}</a>
+                        <a href="{{ url_for('resultado', pagina=p, **params) }}">{{ p }}</a>
                     {% endif %}
                 {% endfor %}
             </div>
         
-          
             {% if pagina < total_paginas %}
-                <a href="{{ url_for('resultado', pagina=total_paginas) }}">Última »</a>
+                <a href="{{ url_for('resultado', pagina=total_paginas, **params) }}">Última »</a>
             {% endif %}
         </div>
+        
         
         <a href="/index">Nova Consulta</a>
         
