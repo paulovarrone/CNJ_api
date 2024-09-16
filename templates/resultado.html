@@ -11,7 +11,8 @@
         <h1>Resultado da Consulta</h1>
 
         {% set params = 
-            {'numero_oab':request.args.get('numero_oab'), 
+            {
+                'numero_oab':request.args.get('numero_oab'), 
                 'uf_oab':request.args.get('uf_oab'), 
                 'nome_advogado':request.args.get('nome_advogado'), 
                 'nome_parte':request.args.get('nome_parte'), 
