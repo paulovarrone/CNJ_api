@@ -11,6 +11,9 @@ def index():
 def resultado():
 
     pagina = request.args.get('pagina', 1, type=int)
+
+    # if pagina > 100:
+    #     pagina = 100
     
     url = "https://hcomunicaapi.cnj.jus.br/api/v1/comunicacao"
 
@@ -80,6 +83,9 @@ def resultado():
         itens_por_pagina = 10 
         total_paginas = (total_items // itens_por_pagina) + (1 if total_items % itens_por_pagina else 0)
         
+        # if total_paginas > 100:
+        #     total_paginas = 100
+
         return render_template('resultado.html', resultado=resultados_extraidos, pagina=pagina, total_paginas=total_paginas)
 
     except Exception as e:
